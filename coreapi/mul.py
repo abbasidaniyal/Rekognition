@@ -1,7 +1,11 @@
-""" to  segment video ffmpeg -loglevel panic -i "/Users/amit/Desktop/Give.mp4"  -c copy -map 0 -segment_time 5 -reset_timestamps 1 -f segment -segment_list_type csv -segment_list '/Users/amit/Desktop/test/seg/seg.csv' '/Users/amit/Desktop/test/seg/%d.mp4' """
 
-"""to extract frames   ffmpeg -i "/Users/amit/Desktop/Give.mp4"  "/Users/amit/Desktop/test/seg/img/%d.jpg" """
+"""
+This is experimental module for multiprocessing.
 
+NOTE:
+to segment video ffmpeg -loglevel panic -i "/Users/amit/Desktop/Give.mp4"  -c copy -map 0 -segment_time 5 -reset_timestamps 1 -f segment -segment_list_type csv -segment_list '/Users/amit/Desktop/test/seg/seg.csv' '/Users/amit/Desktop/test/seg/%d.mp4'
+to extract frames   ffmpeg -i "/Users/amit/Desktop/Give.mp4"  "/Users/amit/Desktop/test/seg/img/%d.jpg"
+"""
 import os
 import subprocess as sp
 import concurrent.futures

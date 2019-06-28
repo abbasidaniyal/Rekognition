@@ -1,4 +1,9 @@
+"""
+This is experimental module for celery workers.
 
+NOTE:
+
+"""
 import os
 import math
 import uuid
