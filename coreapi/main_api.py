@@ -168,7 +168,7 @@ def FaceRecogniseInImage(request, filename, network):
         try:
 
             if network == IMAGE_FR_NETWORK_CHOICES[0]:
-                all_faces, all_bb = FaceDetectionRetina().get_face(file_path)
+                all_faces, all_bb, all_landmarks = FaceDetectionRetina().get_face(file_path)
 
             else:
                 all_faces, all_bb = get_face(img=img, pnet=pnet, rnet=rnet, onet=onet, image_size=image_size)
@@ -176,7 +176,7 @@ def FaceRecogniseInImage(request, filename, network):
             all_face_arr = []
 
             if all_faces is not None:
-                for img, bb in zip(all_faces, all_bb):
+                for i, (img, bb) in enumerate(zip(all_faces, all_bb)):
                     embedding = embed_image(img=img, session=facenet_persistent_session, images_placeholder=images_placeholder, embeddings=embeddings,
                                             phase_train_placeholder=phase_train_placeholder, image_size=image_size)
 
@@ -184,7 +184,10 @@ def FaceRecogniseInImage(request, filename, network):
                         id_name = identify_face(embedding=embedding, embedding_dict=embedding_dict)
                         facial_expression = FaceExp(img)
 
-                        bounding_box = {"top": bb[1], "bottom": bb[3], "left": bb[0], "right": bb[2]}
+                        bounding_box = {"top": bb[1], "bottom": bb[3], "left": bb[0], "right": bb[2], }
+                        if network == IMAGE_FR_NETWORK_CHOICES[0]:
+                            bounding_box.update({"Landmarks": all_landmarks[i]})
+
                         face_dict = {"Identity": id_name, "Bounding Boxes": bounding_box, "Facial Expression": facial_expression, }
                         all_face_arr.append(face_dict)
                 # try:

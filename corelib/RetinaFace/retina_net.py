@@ -101,10 +101,10 @@ class FaceDetectionRetina(object):
         return {
             "Bounding Boxes": {
                 "confidance": output[15],
-                "x1": output[0] * img_width_raw,
-                "y1": output[1] * img_height_raw,
-                "x2": output[2] * img_width_raw,
-                "y2": output[3] * img_height_raw,
+                "x1": int(output[0] * img_width_raw),
+                "y1": int(output[1] * img_height_raw),
+                "x2": int(output[2] * img_width_raw),
+                "y2": int(output[3] * img_height_raw),
             },
             "Landmarks": {
                 "confidance": output[14],
@@ -135,9 +135,10 @@ class FaceDetectionRetina(object):
         print("Number of Faces from Predict " + str(len(prediction)))
         all_faces = []
         all_bb = []
-
+        all_landmarks = []
         if not len(prediction) == 0:
             for face in prediction:
+                landmarks = face["Landmarks"]
                 face = face["Bounding Boxes"]
 
                 bb = np.zeros(4, dtype=np.int32)
@@ -149,7 +150,9 @@ class FaceDetectionRetina(object):
                 face_img = imresize(arr=cropped, size=size, mode='RGB')
                 all_faces.append(face_img)
                 all_bb.append(bb)
-        return all_faces, all_bb
+                all_landmarks.append(landmarks)
+
+        return all_faces, all_bb, all_landmarks
 
     def predict(self, img):
         """   Returns the bounding box coordinates along with the resultant image    """
